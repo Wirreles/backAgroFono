@@ -1,0 +1,8 @@
+node_modules
+node-fb-*.json
+keys.json
+
+.env
+.codegpt
+barcolombian-fdb31-cd3c85bf61bc.json
+.codegpt
