@@ -51,7 +51,7 @@ const createPreference = async (req, res) => {
           failure: 'http://localhost:4200/home',
         },
         auto_return: 'approved',
-        notification_url: 'http://localhost:3000/webhook',
+        notification_url: 'https://backagrofono.onrender.com/webhook',
         external_reference: consultaId, // Usamos el ID de la consulta como referencia externa
       },
     });

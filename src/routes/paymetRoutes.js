@@ -14,7 +14,7 @@ router.post("/", createPreference);
 // Ruta para manejar el webhook de notificaciones de pago
 router.post("/webhook", paymentWebhook);
 
-router.post('/paypal/create-order', createOrder);
-router.post('/paypal/capture-order', captureOrder);
+// router.post('/paypal/create-order', createOrder);
+// router.post('/paypal/capture-order', captureOrder);
 
 module.exports = router;

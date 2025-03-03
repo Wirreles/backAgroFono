@@ -5,15 +5,15 @@ const mercadopago = require("mercadopago");
 const Preapproval = new mercadopago.PreApproval(mpSub);
 
 const createSubscription = async (req, res) => {
-  const { email, userId, price, plan } = req.body; // Agregar el campo "plan"
-  if (!email || !price || !plan) { // Validar que el plan esté presente
+  const { email,dni, price } = req.body; // Agregar el campo "plan"
+  if (!email || !price  || !dni) { // Validar que el plan esté presente
     return res.status(400).json({ error: "Los campos email, price y plan son obligatorios." });
   }
 
   try {
     const body = {
-      reason: `Suscripción ${plan}`, // Usar el plan en el motivo
-      external_reference: userId,
+      reason: `Suscripción para Tecnico`, // Usar el plan en el motivo
+      external_reference: dni,
       auto_recurring: {
         frequency: 1,
         frequency_type: "months",
@@ -21,8 +21,8 @@ const createSubscription = async (req, res) => {
         currency_id: "ARS",
       },
       payer_email: email,
-      back_url: "https://servido.com.ar/",
-      notification_url: "https://backservido.onrender.com/subscription/webhook",
+      back_url: "http://localhost:4200",
+      notification_url: "https://backagrofono.onrender.com/webhook",
       status: "pending",
     };
 
@@ -33,10 +33,9 @@ const createSubscription = async (req, res) => {
       email,
       subscriptionId: response.id,
       subId: subscriptionRef.id,
+      dni: dni,
       price, // Guardar el precio en Firestore
-      plan, // Guardar el plan en Firestore
       createdAt: new Date().toISOString(),
-      userId,
     });
 
     return res.status(200).json({ init_point: response.init_point });
@@ -80,7 +79,7 @@ const handleSubscriptionWebhook = async (req, res) => {
 
     const subscriptionSnapshot = await db
       .collection("subscriptions")
-      .where("userId", "==", external_reference)
+      .where("dni", "==", external_reference)
       .get();
 
     if (subscriptionSnapshot.empty) {
